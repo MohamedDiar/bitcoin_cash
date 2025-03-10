@@ -1,0 +1,52 @@
+name: DBT CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+jobs:
+  dbt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Google auth to authenticate with BigQuery
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }} 
+          export_environment_variables: true  # Exporting so that dbt can use it
+     
+          
+      - name: Create profiles.yml with OAuth method
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml << EOF
+          bitcoin_cash:
+            target: ci
+            outputs:
+              ci:
+                type: bigquery
+                method: oauth
+                project: ${{ vars.GCP_PROJECT_ID }}
+                dataset: ${{ vars.GCP_DATASET_ID }}
+                location: US
+                threads: 4
+
+      - name: Debug DBT 
+        run: dbt debug
+
+      - name: Run DBT
+        run: dbt run
