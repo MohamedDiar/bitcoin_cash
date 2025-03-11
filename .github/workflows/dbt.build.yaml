@@ -8,9 +8,11 @@ on:
 jobs:
   dbt:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -44,9 +46,25 @@ jobs:
                 dataset: ${{ vars.GCP_DATASET_ID }}
                 location: US
                 threads: 4
-
+      
+      
       - name: Debug DBT 
         run: dbt debug
 
       - name: Run DBT
         run: dbt run
+      
+      - name: Test DBT 
+        run: dbt test
+      
+      - name: Generate dbt docs
+        run: dbt docs generate
+
+        
+      # Deploying dbt docs to GitHub Pages
+      - name: Deploy dbt docs to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: target  
+          branch: gh-pages
+          clean: true  # To automatically remove deleted files from the deploy branch
