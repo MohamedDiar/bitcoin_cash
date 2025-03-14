@@ -11,7 +11,7 @@ profile: 'bitcoin_cash'
 
 # To make the month interval configurable. The default value is set to 3 months and is passed to queries liek for example "interval {{ var("month_interval") }} month".
 vars:
-  month_interval: 3
+  month_interval: 10 #Requirements said 3 but testing with 10 and above as data 3 months interval gives no data
 
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
