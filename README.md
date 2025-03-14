@@ -73,6 +73,19 @@ The `dbt_project.yml` file configures the dbt project. Key aspects include:
     *   `hash`: Unique and not null.
     *   `block_hash`, `block_number`, `block_timestamp`, `block_timestamp_month`: Not null.
 
+### Data Mart Model (`DMT_Adresses_Balance`) <a name="data-mart-model-dmt_adresses_balance"></a>
+
+*   **File:** `models/marts/DMT_Adresses_Balance.sql`
+*   **Purpose:** Creates a data mart table named `DMT_Adresses_Balance` that calculates the current balance for each Bitcoin Cash address, excluding any addresses involved in Coinbase transactions.
+*   **Logic:**
+    *   Uses a Common Table Expression (CTE) called `address_transactions` to combine input and output transactions.  Input transactions have negative `transaction_value` (spending), and output transactions have positive `transaction_value` (receiving).
+    *   Uses another CTE called `coinbase_addresses` to identify addresses involved in any Coinbase transactions.
+    *   Calculates the `current_balance` by summing the `transaction_value` for each address, excluding addresses present in the `coinbase_addresses` CTE.
+    *   Also calculates `first_activity` and `last_activity` timestamps for each address.
+*   **Schema (`models/marts/schema.yml`):**  Defines the schema and includes tests:
+    *   `address`: Unique and not null.
+    *   `block_timestamp_month`, `first_activity`, `last_activity`: Not null.
+
 ## Caveats <a name="caveats"></a>
 
 It's important to note the last modification date of the `bigquery-public-data.crypto_bitcoin_cash.transactions` table.  As shown in the image below, the table was last modified on **May 14, 2024, 7:39:36 PM UTC+2**:
