@@ -112,8 +112,8 @@ By increasing the `month_interval` to 10 or more, you'll ensure that the queries
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository_url>
-    cd <repository_directory>
+    git clone https://github.com/MohamedDiar/bitcoin_cash.git
+    cd https://github.com/MohamedDiar/bitcoin_cash.git
     ```
 
 2.  **Install dependencies:**
