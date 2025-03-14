@@ -239,7 +239,7 @@ The workflow file defines the CI pipeline. Here's a breakdown:
 *   **`name: DBT CI`**: The name of the workflow.
 *   **`on`**: Specifies the events that trigger the workflow:
     *   `pull_request`: Triggered on any pull request.
-    *   `push`: Triggered on pushes to the `main` or `master` branches.
+    *   `push`: Triggered on pushes to the `main` or `master` branches. (It is commented out, uncomment it if you want to directly test the gh actions with pushing to your repo)
 *   **`jobs`**: Defines the jobs to be executed.
     *   **`dbt`**: The name of the job.
         *   **`runs-on: ubuntu-latest`**: Specifies the runner environment (Ubuntu).

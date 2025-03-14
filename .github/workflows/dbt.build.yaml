@@ -2,8 +2,8 @@ name: DBT CI
 
 on:
   pull_request:
-  push:
-    branches: [main, master]
+  # push:
+  #   branches: [main, master]
 
 jobs:
   dbt:
